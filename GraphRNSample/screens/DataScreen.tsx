@@ -2,105 +2,123 @@
 // Licensed under the MIT license.
 
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import {UserContextType, UserContext} from '../UserContext';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
-type Props = {
-  navigation: any;
-};
+import {UserContext} from '../UserContext';
+import {theme} from '../theme';
 
-export default function DataScreen({navigation}: Props) {
+const DataScreen = ({navigation}: {navigation: any}) => {
   const {userLoading, userFirstName, userFullName, userEmail, userTimeZone, userPhoto} = 
-    React.useContext<UserContextType>(UserContext);
+    React.useContext(UserContext);
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Información de Usuario</Text>
-        <View style={styles.dataContainer}>
-          <Text style={styles.dataLabel}>Estado de carga:</Text>
-          <Text style={styles.dataValue}>{userLoading ? 'Cargando...' : 'Listo'}</Text>
-        </View>
-        <View style={styles.dataContainer}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Mi Perfil</Text>
+      </View>
+
+      {/* Profile Image */}
+      <View style={styles.profileContainer}>
+        <Image
+          source={userPhoto}
+          style={styles.profileImage}
+        />
+      </View>
+
+      {/* Data Sections */}
+      <View style={styles.dataContainer}>
+        <View style={styles.dataSection}>
           <Text style={styles.dataLabel}>Nombre completo:</Text>
           <Text style={styles.dataValue}>{userFullName}</Text>
         </View>
-        <View style={styles.dataContainer}>
+        <View style={styles.dataSection}>
           <Text style={styles.dataLabel}>Nombre:</Text>
           <Text style={styles.dataValue}>{userFirstName}</Text>
         </View>
-        <View style={styles.dataContainer}>
+        <View style={styles.dataSection}>
           <Text style={styles.dataLabel}>Email:</Text>
           <Text style={styles.dataValue}>{userEmail}</Text>
         </View>
-        <View style={styles.dataContainer}>
+        <View style={styles.dataSection}>
           <Text style={styles.dataLabel}>Zona horaria:</Text>
           <Text style={styles.dataValue}>{userTimeZone}</Text>
         </View>
       </View>
 
+      {/* Back Button */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, theme.components.button]}
           onPress={() => navigation.goBack()}>
           <Text style={styles.buttonText}>Volver</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F6FA',
-    padding: 15,
+    backgroundColor: theme.colors.background,
   },
-  section: {
-    marginBottom: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  header: {
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing.large,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#2C3E50',
+  headerTitle: {
+    ...theme.fonts.heading,
+    textAlign: 'center',
+    marginBottom: theme.spacing.small,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    padding: theme.spacing.large,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: theme.spacing.medium,
   },
   dataContainer: {
-    marginBottom: 10,
+    padding: theme.spacing.large,
+  },
+  dataSection: {
+    marginBottom: theme.spacing.medium,
   },
   dataLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 2,
+    ...theme.fonts.subtitle,
+    marginBottom: theme.spacing.small,
   },
   dataValue: {
-    fontSize: 16,
-    color: '#333',
+    ...theme.fonts.body,
   },
   buttonContainer: {
-    marginTop: 20,
-    alignItems: 'center',
+    padding: theme.spacing.large,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
   },
   button: {
-    backgroundColor: '#3498DB',
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: theme.colors.accent,
+    padding: theme.spacing.medium,
+    borderRadius: theme.components.button.borderRadius,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    ...theme.fonts.title,
+    color: theme.colors.secondary,
     textAlign: 'center',
   },
 });
+
+export default DataScreen;

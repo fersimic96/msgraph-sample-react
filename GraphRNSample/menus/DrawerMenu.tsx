@@ -26,6 +26,7 @@ import {StackParamList} from '../App';
 import {GraphManager} from '../graph/GraphManager';
 import HomeScreen from '../screens/HomeScreen';
 import DataScreen from '../screens/DataScreen';
+import {theme} from '../theme';
 
 const Drawer = createDrawerNavigator();
 
@@ -41,17 +42,26 @@ type DrawerMenuProps = StackScreenProps<StackParamList, 'Main'>;
 const CustomDrawerContent: FC<CustomDrawerContentProps> = props => {
   return (
     <DrawerContentScrollView {...props}>
-      <View style={styles.profileView}>
+      <View style={styles.drawerHeader}>
         <Image
           source={props.userPhoto}
-          resizeMode='contain'
+          resizeMode='cover'
           style={styles.profilePhoto}
         />
-        <Text style={styles.profileUserName}>{props.userName}</Text>
-        <Text style={styles.profileEmail}>{props.userEmail}</Text>
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>{props.userName}</Text>
+          <Text style={styles.userEmail}>{props.userEmail}</Text>
+        </View>
       </View>
-      <DrawerItemList {...props} />
-      <DrawerItem label='Sign Out' onPress={props.signOut} />
+      <View style={styles.drawerItems}>
+        <DrawerItemList {...props} />
+        <DrawerItem 
+          label='Cerrar sesión' 
+          onPress={props.signOut} 
+          style={styles.drawerItem}
+          labelStyle={styles.drawerItemLabel}
+        />
+      </View>
     </DrawerContentScrollView>
   );
 };
@@ -61,7 +71,6 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
   declare context: React.ContextType<typeof AuthContext>;
 
   state = {
-    // TEMPORARY
     userLoading: true,
     userFirstName: 'Adele',
     userFullName: 'Adele Vance',
@@ -99,7 +108,6 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
             text: 'OK',
           },
         ],
-        {cancelable: false},
       );
     }
   }
@@ -109,36 +117,33 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
 
     return (
       <UserContext.Provider value={this.state}>
-        <Drawer.Navigator
-          initialRouteName='Home'
-          screenOptions={{
-            drawerType: 'front',
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: '#276b80',
-            },
-            headerTintColor: 'white',
-          }}
-          drawerContent={props => (
-            <CustomDrawerContent
-              {...props}
-              userName={this.state.userFullName}
-              userEmail={this.state.userEmail}
-              userPhoto={this.state.userPhoto}
+        <Drawer.Navigator 
+          drawerContent={(props) => (
+            <CustomDrawerContent 
+              {...props} 
+              userName={this.state.userFullName} 
+              userEmail={this.state.userEmail} 
+              userPhoto={this.state.userPhoto} 
               signOut={this._signOut}
             />
           )}
         >
-          <Drawer.Screen
-            name='Home'
+          <Drawer.Screen 
+            name='Home' 
             component={HomeScreen}
-            options={{drawerLabel: 'Home', headerTitle: 'Welcome'}}
+            options={{
+              drawerLabel: 'Bienvenido',
+              drawerLabelStyle: styles.drawerLabel,
+            }}
           />
           {userLoaded && (
-            <Drawer.Screen
-              name='Data'
+            <Drawer.Screen 
+              name='Data' 
               component={DataScreen}
-              options={{drawerLabel: 'Datos'}}
+              options={{
+                drawerLabel: 'Mi perfil',
+                drawerLabelStyle: styles.drawerLabel,
+              }}
             />
           )}
         </Drawer.Navigator>
@@ -148,24 +153,47 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  profileView: {
-    backgroundColor: '#276b80',
-    padding: 16,
+  drawerHeader: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.large,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
   profilePhoto: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: theme.spacing.medium,
   },
-  profileUserName: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+  userInfo: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  profileEmail: {
-    color: 'white',
+  userName: {
+    color: theme.colors.secondary,
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  userEmail: {
+    color: '#999',
+    fontSize: 14,
+  },
+  drawerItems: {
+    backgroundColor: theme.colors.secondary,
+    flex: 1,
+  },
+  drawerItem: {
+    marginVertical: theme.spacing.small,
+  },
+  drawerItemLabel: {
+    color: theme.colors.primary,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  drawerLabel: {
+    color: theme.colors.primary,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

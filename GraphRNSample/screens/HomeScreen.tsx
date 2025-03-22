@@ -12,32 +12,22 @@ import {
 } from 'react-native';
 
 import {UserContext} from '../UserContext';
+import {theme} from '../theme';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeComponent = () => {
   const modules = [
     {
       id: 1,
-      title: 'Combustibles',
-      icon: 'gas-station',
-      color: '#FF6B6B',
+      title: 'Rutinas',
+      icon: 'calendar-check',
+      color: theme.colors.accent,
     },
     {
       id: 2,
-      title: 'Tarjetas',
-      icon: 'credit-card',
-      color: '#4ECDC4',
-    },
-    {
-      id: 3,
-      title: 'Servicios',
+      title: 'Equipos',
       icon: 'tools',
-      color: '#45B7D1',
-    },
-    {
-      id: 4,
-      title: 'Promociones',
-      icon: 'gift',
-      color: '#96CEB4',
+      color: theme.colors.accent,
     },
   ];
 
@@ -45,12 +35,14 @@ const HomeComponent = () => {
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>YPF</Text>
-        <Text style={styles.headerSubtitle}>Tu aplicación de servicios</Text>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>YPF</Text>
+          <Text style={styles.headerSubtitle}>Tu aplicación de servicios</Text>
+        </View>
       </View>
 
       {/* Balance Section */}
-      <View style={styles.balanceContainer}>
+      <View style={[styles.balanceContainer, theme.components.card]}>
         <Text style={styles.balanceTitle}>Saldo disponible</Text>
         <Text style={styles.balanceAmount}>$0.00</Text>
       </View>
@@ -61,15 +53,20 @@ const HomeComponent = () => {
           <TouchableOpacity
             key={module.id}
             style={[styles.moduleCard, {backgroundColor: module.color}]}
-          >
-            <Text style={styles.moduleTitle}>{module.title}</Text>
-            {/* Aquí iría el ícono correspondiente */}
+            onPress={() => console.log(`Module ${module.title} pressed`) }>
+            <MaterialCommunityIcons
+              name={module.icon}
+              size={50}
+              color={theme.colors.secondary}
+              style={[styles.icon, {marginBottom: theme.spacing.medium}]}
+            />
+            <Text style={[styles.moduleTitle, {fontSize: 18}]}>{module.title}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       {/* Footer */}
-      <View style={styles.footer}>
+      <View style={[styles.footer, theme.components.card]}>
         <Text style={styles.footerText}>YPF 2025</Text>
       </View>
     </ScrollView>
@@ -87,69 +84,75 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F6FA',
+    backgroundColor: theme.colors.background,
   },
   header: {
-    padding: 20,
-    backgroundColor: '#2C3E50',
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing.large,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  headerContent: {
+    alignItems: 'center',
+    paddingHorizontal: theme.spacing.medium,
   },
   headerTitle: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
+    ...theme.fonts.heading,
+    marginBottom: theme.spacing.small,
   },
   headerSubtitle: {
-    color: '#ECF0F1',
-    fontSize: 16,
+    ...theme.fonts.subtitle,
   },
   balanceContainer: {
-    padding: 20,
-    backgroundColor: '#3498DB',
+    ...theme.components.card,
+    marginHorizontal: theme.spacing.medium,
+    marginBottom: theme.spacing.medium,
   },
   balanceTitle: {
-    color: 'white',
-    fontSize: 16,
-    marginBottom: 10,
+    ...theme.fonts.title,
+    marginBottom: theme.spacing.small,
   },
   balanceAmount: {
-    color: 'white',
-    fontSize: 24,
+    ...theme.fonts.title,
     fontWeight: 'bold',
   },
   modulesContainer: {
-    padding: 10,
+    padding: theme.spacing.large,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    padding: theme.spacing.medium,
+    marginHorizontal: theme.spacing.small,
   },
   moduleCard: {
-    width: '45%',
+    width: '48%',
     height: 100,
+    borderRadius: theme.components.card.borderRadius,
+    padding: theme.spacing.medium,
     borderRadius: 10,
-    margin: 5,
-    padding: 15,
+    marginBottom: theme.spacing.medium,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginBottom: theme.spacing.medium,
+    ...theme.shadows.medium,
+  },
+  icon: {
+    marginBottom: theme.spacing.small,
   },
   moduleTitle: {
-    color: 'white',
+    ...theme.fonts.title,
+    color: theme.colors.secondary,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   footer: {
-    padding: 20,
-    backgroundColor: '#2C3E50',
+    ...theme.components.card,
+    marginTop: theme.spacing.large,
   },
   footerText: {
-    color: '#ECF0F1',
+    ...theme.fonts.small,
     textAlign: 'center',
   },
 });
+
+export default HomeComponent;
