@@ -25,7 +25,7 @@ import {UserContext} from '../UserContext';
 import {StackParamList} from '../App';
 import {GraphManager} from '../graph/GraphManager';
 import HomeScreen from '../screens/HomeScreen';
-import UserContextScreen from '../screens/UserContextScreen';
+import DataScreen from '../screens/DataScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -136,8 +136,8 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
           />
           {userLoaded && (
             <Drawer.Screen
-              name='UserContext'
-              component={UserContextScreen}
+              name='Data'
+              component={DataScreen}
               options={{drawerLabel: 'Datos'}}
             />
           )}

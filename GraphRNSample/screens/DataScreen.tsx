@@ -2,14 +2,14 @@
 // Licensed under the MIT license.
 
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {UserContextType, UserContext} from '../UserContext';
 
 type Props = {
   navigation: any;
 };
 
-export default function UserContextScreen({navigation}: Props) {
+export default function DataScreen({navigation}: Props) {
   const {userLoading, userFirstName, userFullName, userEmail, userTimeZone, userPhoto} = 
     React.useContext<UserContextType>(UserContext);
 
@@ -40,11 +40,11 @@ export default function UserContextScreen({navigation}: Props) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Text
+        <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.goBack()}>
-          Volver
-        </Text>
+          <Text style={styles.buttonText}>Volver</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#3498DB',
     padding: 15,
     borderRadius: 10,
+  },
+  buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
