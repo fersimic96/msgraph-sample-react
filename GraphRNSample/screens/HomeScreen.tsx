@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -16,18 +17,10 @@ import {UserContext} from '../UserContext';
 const Stack = createStackNavigator();
 
 const HomeComponent = () => {
-  const userContext = React.useContext(UserContext);
-
   return (
     <View style={styles.container}>
-      <ActivityIndicator
-        color={Platform.OS === 'android' ? '#276b80' : undefined}
-        animating={userContext.userLoading}
-        size='large'
-      />
-      {userContext.userLoading ? null : (
-        <Text>Hello {userContext.userFirstName}!</Text>
-      )}
+      <Text style={styles.title}>¡Hola! Prueba 123</Text>
+      <Text style={styles.description}>Esta es una prueba de Fast Refresh</Text>
     </View>
   );
 };
@@ -53,5 +46,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    color: 'red',
+  },
+  description: {
+    fontSize: 16,
+    color: 'purple',
   },
 });
