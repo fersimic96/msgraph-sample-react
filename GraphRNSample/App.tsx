@@ -51,6 +51,7 @@ export default function App({_navigation}: Props) {
             userToken: null,
           };
       }
+      return prevState;
     },
     {
       isLoading: true,

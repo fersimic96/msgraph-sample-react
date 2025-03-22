@@ -25,8 +25,7 @@ import {UserContext} from '../UserContext';
 import {StackParamList} from '../App';
 import {GraphManager} from '../graph/GraphManager';
 import HomeScreen from '../screens/HomeScreen';
-import CalendarScreen from '../screens/CalendarScreen';
-import NewEventScreen from '../screens/NewEventScreen';
+import UserContextScreen from '../screens/UserContextScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -82,16 +81,12 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
     });
 
     try {
-      // Get the signed-in user from Graph
       const user: MicrosoftGraph.User = await GraphManager.getUserAsync();
 
-      // Update UI with display name and email
       this.setState({
         userLoading: false,
         userFirstName: user.givenName!,
         userFullName: user.displayName!,
-        // Work/School accounts have email address in mail attribute
-        // Personal accounts have it in userPrincipalName
         userEmail: user.mail! || user.userPrincipalName!,
         userTimeZone: user.mailboxSettings?.timeZone!,
       });
@@ -124,7 +119,6 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
             },
             headerTintColor: 'white',
           }}
-          // eslint-disable-next-line react/no-unstable-nested-components
           drawerContent={props => (
             <CustomDrawerContent
               {...props}
@@ -133,7 +127,8 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
               userPhoto={this.state.userPhoto}
               signOut={this._signOut}
             />
-          )}>
+          )}
+        >
           <Drawer.Screen
             name='Home'
             component={HomeScreen}
@@ -141,16 +136,9 @@ export default class DrawerMenuContent extends React.Component<DrawerMenuProps> 
           />
           {userLoaded && (
             <Drawer.Screen
-              name='Calendar'
-              component={CalendarScreen}
-              options={{drawerLabel: 'Calendar'}}
-            />
-          )}
-          {userLoaded && (
-            <Drawer.Screen
-              name='NewEvent'
-              component={NewEventScreen}
-              options={{drawerLabel: 'New event'}}
+              name='UserContext'
+              component={UserContextScreen}
+              options={{drawerLabel: 'Datos'}}
             />
           )}
         </Drawer.Navigator>
@@ -164,19 +152,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileView: {
-    alignItems: 'center',
-    padding: 10,
+    backgroundColor: '#276b80',
+    padding: 16,
   },
   profilePhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
   },
   profileUserName: {
-    fontWeight: '700',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   profileEmail: {
-    fontWeight: '200',
-    fontSize: 10,
+    color: 'white',
   },
 });

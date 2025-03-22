@@ -4,7 +4,7 @@
 import * as React from 'react';
 import {ImageSourcePropType} from 'react-native';
 
-type UserContextType = {
+export type UserContextType = {
   userLoading: boolean;
   userFirstName: string;
   userFullName: string;
